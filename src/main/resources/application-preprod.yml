@@ -1,0 +1,39 @@
+#For deployment to preprod
+app:
+  profile: ${PROFILE}
+  storage:
+    blobService: ${BLOB_SERVICE}
+    container: ${PROFILE}
+    publicContainer: ${PUBLIC_URL}
+    marketplacePublicContainer: public
+    saasDirectory: saas
+    tenantDirectory: tenant
+    azureBlobSasToken: ${SAS_TOKEN}
+  fehostc: ${SAS_FEHOSTC}
+  fehosta: ${SAS_FEHOSTA}
+  behost: ${BEHOST}
+  mongoBaseUrl: ${MONGO_BASE_URL}
+  solarAmpsBaseUrl: ${SOLARAMPS_BASE_URL}
+  workspaceReportId: ${REPORT_ID_WORKSPACE}
+  invoiceReportId: ${REPORT_ID_INVOICE}
+  docuSignRefreshToken: ${DOCUSIGN_REFRESH_TOKEN}
+  stripeApiPrivateKey: ${STRIPE_API_PRIVATE_KEY}
+  stripeApiPublicKey: ${STRIPE_API_PUBLIC_KEY}
+
+multitenancy:
+  saas:
+    datasource:
+      connectionString: ${MYSQLCONNSTR_azSolarDBMysql}
+      driverClassName: com.mysql.cj.jdbc.Driver
+      connectionTimeout: 30000
+#      maxPoolSize: 20
+#      idleTimeout: 30000
+#      minIdle: 5
+#      maxLifetime: 28800000
+      leakDetectionThreshold: 300000
+      poolName: saas-schema-connection-pool
+      effectiveSpindleCount: 0
+
+#CSV tenant schema list
+tenantSchemas:
+  update: false

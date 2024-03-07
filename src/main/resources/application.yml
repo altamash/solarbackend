@@ -1,0 +1,62 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /solarapi
+  error:
+    include-message: always
+
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+spring:
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  profiles:
+    include:
+      - cache
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
+    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+  batch:
+    job:
+      enabled: false
+    initialize-schema: always
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jpa:
+        show-sql: true
+        generate-ddl: false
+  #        hibernate:
+  #          use-new-id-generator-mappings: SEQUENCE
+  #          naming:
+  #            implicit-strategy: jpa
+  #        properties:
+  #          hibernate:
+  #            format_sql: true
+  #            jdbc:
+  #              batch_size: 10
+  #            order_inserts: true
+  #            order_updates: true
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  cache:
+    jcache:
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
+
+springdoc:
+  packagesToScan: com.solar.api.saas.controller.v1, com.solar.api.tenant.controller.v1
+  pathsToMatch: /**
+  swagger-ui:
+    operationsSorter: alpha #For sorting endpoints alphabetically
+    tagsSorter: alpha #For sorting tags alphabetically
+
+api:
+  version: 3.0.1
+  description: SolarAmps REST API

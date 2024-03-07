@@ -1,0 +1,42 @@
+#For localhost
+app:
+  profile: batch
+  storage:
+    blobService: https://devstoragesi.blob.core.windows.net
+    container: dev
+    publicContainer: devpublic
+    marketplacePublicContainer: public
+    saasDirectory: saas
+    tenantDirectory: tenant
+    azureBlobSasToken: ?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2023-12-31T17:29:34Z&st=2023-01-02T09:29:34Z&spr=https&sig=Rm36UsxcFqzdFVi3n2tsQPIlmfpAlmvhhuMnpV%2Fp5zU%3D
+  fehostc: http://localhost:8080/solarapi
+  fehosta: http://localhost:8080/solarapi
+  behost: localhost:8080
+  mongoBaseUrl: https://simongo.azurewebsites.net/productsapi
+  solarAmpsBaseUrl: https://sidevspring-dev-gateway-service.azuremicroservices.io
+  #  mongoBaseUrl: http://localhost:8081/productsapi/
+  workspaceReportId: 77f174e7-788e-4fe9-9042-cf5d7c1a1ccc
+  invoiceReportId: b305c5ff-24cb-4ec9-9305-c13261e3ecca
+  stripeApiPrivateKey: sk_test_51MABRWHobZ8CGNzpyWdeYhucZ26OQHE24gWDh9mOWBYjSN5z0tFvQqL53lV4U7kAoSah9FIpZ6hqLTBxARzuoaRi00bjRgncCe
+  stripeApiPublicKey: pk_test_51MABRWHobZ8CGNzpdC1KIXaCVnLXw4pwc32KdJozPuFrDE6rc0xUcTonccpp9ooO7gSLqKgjLenvHfYu5ZPRIcYH00lFe7OGCn
+  mongoUrl: example.com
+  docuSignRefreshToken: 1000.6c4fab40896b641ff1572cde81f8e51e.4b7185e8bbd110e52d6ee94d05505934
+
+multitenancy:
+  saas:
+    datasource:
+      connectionString: Database=devflex; Data Source=devflex.mysql.database.azure.com; User Id=dataadmin ; Password=solaR@dmiN1235
+      #connectionString: Database=sidevdb2; Data Source=sidevdb2.mysql.database.azure.com; User Id=dataadmin@sidevdb2; Password=solaR@dmiN1235
+      #connectionString: Database=ec1001; Data Source=localhost:3306; User Id=root; Password=root
+      driverClassName: com.mysql.cj.jdbc.Driver
+      connectionTimeout: 30000
+#      maxPoolSize: 20
+#      idleTimeout: 30000
+#      minIdle: 5
+#      maxLifetime: 28800000
+      leakDetectionThreshold: 300000
+      poolName: saas-schema-connection-pool
+      effectiveSpindleCount: 0
+
+tenantSchemas:
+  update: false

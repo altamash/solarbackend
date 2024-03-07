@@ -1,0 +1,58 @@
+#For localhost
+app:
+  profile: local
+  storage:
+    blobService: https://devstoragesi.blob.core.windows.net
+    container: dev
+    publicContainer: devpublic
+    marketplacePublicContainer: public
+    saasDirectory: saas
+    tenantDirectory: tenant
+    azureBlobSasToken: ?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2025-01-01T01:40:43Z&st=2024-01-01T07:40:43Z&spr=https&sig=Imx0r2doZ9Y1nCxnq56yAiKjA%2B0B7kf66XqO%2FvYHIUc%3D
+  fehostc: http://localhost:8080/solarapi
+  fehosta: http://localhost:8080/solarapi
+  behost: localhost:8080
+  mongoBaseUrl: http://localhost:8080/productsapi #https://devtestingnew.azurewebsites.net/productsapi
+  solarAmpsBaseUrl: https://sidevspring-dev-gateway-service.azuremicroservices.io
+#  mongoBaseUrl: https://mongo-stage.azurewebsites.net/productsapi
+#  mongoBaseUrl: http://localhost:8081/productsapi/
+  workspaceReportId: 77f174e7-788e-4fe9-9042-cf5d7c1a1ccc
+  invoiceReportId: b305c5ff-24cb-4ec9-9305-c13261e3ecca
+  stripeApiPrivateKey : sk_test_51MABRWHobZ8CGNzpyWdeYhucZ26OQHE24gWDh9mOWBYjSN5z0tFvQqL53lV4U7kAoSah9FIpZ6hqLTBxARzuoaRi00bjRgncCe
+  stripeApiPublicKey : pk_test_51MABRWHobZ8CGNzpdC1KIXaCVnLXw4pwc32KdJozPuFrDE6rc0xUcTonccpp9ooO7gSLqKgjLenvHfYu5ZPRIcYH00lFe7OGCn
+  mongoUrl: example.com
+  docuSignRefreshToken: 1000.6c4fab40896b641ff1572cde81f8e51e.4b7185e8bbd110e52d6ee94d05505934
+
+
+multitenancy:
+  saas:
+    datasource:
+      connectionString: Database=solardevdb; Data Source=solardevdb.mysql.database.azure.com; User Id=dataadmin; Password=solaR@dmiN1235
+      driverClassName: com.mysql.cj.jdbc.Driver
+      connectionTimeout: 30000
+#      maxPoolSize: 20          # This is set dynamically, DynamicConnectionParams.MAX_POOL_SIZE
+                                # pool size = (core_count * 2) + effective_spindle_count
+                                # https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+#      idleTimeout: 30000       # When running as a fixed-size pool (default) the idleTimeout has no effect.
+                                # idleTimeout is meant to shrink the pool from maxPoolSize down toward minimumIdle when connections are unused in the pool.
+                                # However, when minIdle == maxPoolSize then closing an "idle" connection makes no sense as it will be replaced immediately in the pool.
+#      minIdle: 5               # Makes it fixed pool size (recommended by HikariCP). When minIdle is not defined it defaults to maxPoolSize.
+#      maxLifetime: 28800000    # This is set dynamically, DynamicConnectionParams.MAX_LIFE_TIME
+                                # Configure HikariCP idleTimeout and maxLifeTime settings to be one minute less than
+                                # the wait_timeout of MySQL - MySQL wait_timeout = 28800 seconds default
+                                # https://github.com/brettwooldridge/HikariCP/wiki/FAQ
+      leakDetectionThreshold: 300000
+      poolName: saas-schema-connection-pool
+      effectiveSpindleCount: 0  # The number of hard drives (not SSD). Because each spinning hard disk can be called a spindle.
+                                # For example, for a server with a RAID of 16 disks, the effective_spindle_count should be 16.
+                                # Because HDD usually can handle only one request at a time, the formula here is actually measuring
+                                # how many concurrent I/O requests the server can manage.
+
+logging:
+  level:
+    com:
+      zaxxer:
+        hikari: DEBUG
+
+tenantSchemas:
+  update: false

@@ -1,0 +1,36 @@
+package com.solar.api.tenant.mapper.weather;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CurrentDTO {
+    private long last_updated_epoch;
+    private String last_updated;
+    private double temp_c;
+    private double temp_f;
+    private int is_day;
+    private ConditionDTO condition;
+    private double wind_mph;
+    private double wind_kph;
+    private int wind_degree;
+    private String wind_dir;
+    private double pressure_mb;
+    private double pressure_in;
+    private double precip_mm;
+    private double precip_in;
+    private int humidity;
+    private int cloud;
+    private double feelslike_c;
+    private double feelslike_f;
+    private double vis_km;
+    private double vis_miles;
+    private double uv;
+    private double gust_mph;
+    private double gust_kph;
+}

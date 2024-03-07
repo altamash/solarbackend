@@ -1,0 +1,30 @@
+cache:
+  config:
+    - name: pNamesMap
+      keyClass: org.springframework.cache.interceptor.SimpleKey
+      valueClass: java.util.HashMap
+      heap: 50 # mb
+      offHeap: 100 # mb
+      ttlOrtti: 28800 # seconds
+      expiryPolicy: time_to_idle # none, time_to_idle, time_to_live
+    - name: appCache
+      keyClass: org.springframework.cache.interceptor.SimpleKey
+      valueClass: java.lang.Object
+      heap: 50
+      offHeap: 100
+      ttlOrtti: 300
+      expiryPolicy: time_to_live
+    - name: StringKeyCache
+      keyClass: java.lang.String
+      valueClass: java.util.List
+      heap: 50
+      offHeap: 100
+      ttlOrtti: 300
+      expiryPolicy: time_to_live
+    - name: LongKeyCache
+      keyClass: java.lang.Long
+      valueClass: java.util.List
+      heap: 50
+      offHeap: 100
+      ttlOrtti: 300
+      expiryPolicy: time_to_live

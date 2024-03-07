@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude"
+               packages="com.solar.api" status="DEBUG">
+    <Appenders>
+        <xi:include
+                href="log4j2-includes/console-appender_pattern-layout_colored.xml"/>
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="%style{%d{HH:mm:ss.SSS}}{yellow}
+                  %highlight{%-5level %logger{36}}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green}
+                  %message%n"/>
+        </Console>
+        <!-- Async-->
+        <Console name="LogToConsoleAsync" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false" pattern="%style{%d{HH:mm:ss.SSS} [%t]}{yellow}
+                  %highlight{%-5level %logger{36}}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green}
+                  %message%n"/>
+            <BurstFilter level="INFO" rate="2" maxBurst="10"/>
+        </Console>
+        <File name="LogToFileAsync" fileName="logs/application.log">
+            <JSONLayout compact="true" eventEol="true"/>
+            <BurstFilter level="INFO" rate="2" maxBurst="10"/>
+            <PatternLayout>
+                <PatternLayout disableAnsi="false" pattern="%style{%d{HH:mm:ss.SSS}}{yellow}
+                  %highlight{%-5level %logger{36}}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green}
+                  %message%n"/>
+            </PatternLayout>
+        </File>
+        <!--JDBC-->
+        <Async name="AsyncAppender" bufferSize="80">
+            <AppenderRef ref="LogToConsoleAsync"/>
+            <!--<AppenderRef ref="LogToFileAsync"/>-->
+        </Async>
+        <JDBC name="JDBCAppender" tableName="application_log">
+            <ConnectionFactory
+                    class="com.solar.api.saas.configuration.MasterDataSourceFactory"
+                    method="getConnection"/>
+            <Column name="date_time" isEventTimestamp="true"/>
+            <Column name="logger" pattern="%logger" isUnicode="false"/>
+            <Column name="level" pattern="%level" isUnicode="false"/>
+            <Column name="message" pattern="%message" isUnicode="false"/>
+            <Column name="throwable" pattern="%ex{full}" isUnicode="false"/>
+            <Column name="comp_key" pattern="%X{Comp-Key}" isUnicode="false"/>
+        </JDBC>
+        <!--Rolling-->
+        <RollingFile name="rollByTimeAndSize"
+                     fileName="logs/log4j2/roll-by-time-and-size/app.log"
+                     filePattern="logs/log4j2/roll-by-time-and-size/app.%d{MM-dd-yyyy-HH-mm}.%i.log.gz">
+            <PatternLayout>
+                <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy
+                        size="700 KB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="logs/log4j2/roll-by-time-and-size" maxDepth="2">
+                    <IfFileName
+                            glob="logs/log4j2/roll-by-time-and-size/app.*.log.gz"/>
+                    <IfLastModified age="5d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!--<Logger name="com.solar.api" level="info" additivity="false">
+            <AppenderRef ref="AsyncAppender"/>
+            <AppenderRef ref="rollByTimeAndSize"/>
+        </Logger>-->
+        <!--<Logger name="com.solar.api" level="error" additivity="false">
+            <AppenderRef ref="JDBCAppender"/>
+        </Logger>-->
+        <Logger name="org.springframework.boot" level="error" additivity="false">
+            <AppenderRef ref="AsyncAppender"/>
+        </Logger>
+
+        <Logger name="com" level="info">
+            <AppenderRef ref="AsyncAppender"/>
+        </Logger>
+
+        <Root level="error">
+            <AppenderRef ref="JDBCAppender" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>

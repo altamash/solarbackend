@@ -1,0 +1,82 @@
+# This is a sample build configuration for Java (Maven).
+# Check our guides at https://confluence.atlassian.com/x/zd-5Mw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: maven:3.8.4-openjdk-17-slim
+
+clone:
+  depth: full
+pipelines:
+  branches:
+    development:
+      - step:
+          caches:
+            - maven
+          script:
+            - apt-get update && apt-get install -y unzip git
+            - export AZ_SUBSCRIPTION_ID=e673f8bc-1de6-487b-a2d3-d16965156aa7
+            - export AZ_RESOURCE_GROUP=rg_dev
+            - export AZ_APP_NAME=solardevbe
+            - export AZ_REGION=eastus
+            - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+            - az login --service-principal -u $appId -p $password --tenant $tenant
+            - mvn clean install -X
+            - mvn azure-webapp:deploy -X
+    stage:
+      - step:
+          caches:
+            - maven
+          script:
+            - apt-get update && apt-get install -y unzip git
+            - export AZ_SUBSCRIPTION_ID=e673f8bc-1de6-487b-a2d3-d16965156aa7
+            - export AZ_RESOURCE_GROUP=rg_stage
+            - export AZ_APP_NAME=stagebemgm
+            - export AZ_REGION=eastus
+            - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+            - az login --service-principal -u $appIdStage -p $passwordStage --tenant $tenantStage
+            - mvn clean install -X
+            - mvn azure-webapp:deploy -X
+    master:
+      - step:
+          caches:
+            - maven
+          script:
+            - apt-get update && apt-get install -y unzip git
+            - export AZ_SUBSCRIPTION_ID=2ff14b67-0b59-4366-b97d-8ce42bb79c87
+            - export AZ_RESOURCE_GROUP=LiveBackend
+            - export AZ_APP_NAME=siprodbeapi
+            - export AZ_REGION=eastus
+            - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+            - az login --service-principal -u $appIdProduction -p $passwordProduction --tenant $tenantProduction
+            - mvn clean install -X
+            - mvn azure-webapp:deploy -X
+    preprod:
+      - step:
+          caches:
+            - maven
+          script:
+            - apt-get update && apt-get install -y unzip git
+            - export AZ_SUBSCRIPTION_ID=e673f8bc-1de6-487b-a2d3-d16965156aa7
+            - export AZ_RESOURCE_GROUP=rg_preprod
+            - export AZ_APP_NAME=zykpknok
+            - export AZ_REGION=eastus
+            - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+            - az login --service-principal -u $appIdProduction -p $passwordProduction --tenant $tenantProduction
+            - mvn clean -U
+            - mvn clean install
+            - mvn azure-webapp:deploy -X
+    new-production:
+      - step:
+          caches:
+            - maven
+          script:
+            - apt-get update && apt-get install -y unzip git
+            - export AZ_SUBSCRIPTION_ID=2ff14b67-0b59-4366-b97d-8ce42bb79c87
+            - export AZ_RESOURCE_GROUP=rgprodnode
+            - export AZ_APP_NAME=prodbesin1
+            - export AZ_REGION=eastus
+            - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+            - az login --service-principal -u $appIdProduction -p $passwordProduction --tenant $tenantProduction
+            - mvn clean install -X
+            - mvn azure-webapp:deploy -X
